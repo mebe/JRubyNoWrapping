@@ -4,7 +4,7 @@ namespace :bug do
     desc "Compile the stuff"
     task :compile do
         mkdir_p TARGET
-        sh "javac -sourcepath src -d #{TARGET} src/foo/RCTest.java"
+        sh "javac -g -sourcepath src -d #{TARGET} src/foo/RCTest.java"
     end
 
     desc "Run the stuff"

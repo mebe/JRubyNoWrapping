@@ -1,13 +1,47 @@
-require File.expand_path('../job', __FILE__)
+require 'java'
+require 'jruby/core_ext'
 
-puts "Trying to cause non-wrapped object to appear..."
-i = 0
-a = Java::foo.RCTest.new
-l = lambda { Job.new }
-e = a.construct(l)
-while(e.class.to_s == "Job") do
-    e = a.construct(l)
-    i += 1
+require_relative 'with_inherited'
+require_relative 'no_inherited'
+require_relative 'subclass_of_with_inherited'
+require_relative 'subclass_of_no_inherited'
+
+creator_caller = Java::foo.RCTest.new
+
+class WithInheritedCreator
+
+  include Java::foo.RCTest::Creator
+
+  def create
+    SubclassOfWithInherited.new
+  end
+
 end
 
-puts "After #{i} iterations, constructed object has class #{e.class.to_s} instead of #{Job.to_s}"
+class NoInheritedCreator
+
+  include Java::foo.RCTest::Creator
+
+  def create
+    SubclassOfNoInherited.new
+  end
+
+end
+
+puts
+
+with_inherited_creator = WithInheritedCreator.new
+
+puts 'Following three lines should all say "SubclassOfWithInherited"'
+puts SubclassOfWithInherited.new.class
+puts with_inherited_creator.create.class
+puts creator_caller.construct(with_inherited_creator).class
+
+puts
+
+no_inherited_creator = NoInheritedCreator.new
+
+puts 'Following three lines should all say "SubclassOfNoInherited"'
+puts SubclassOfNoInherited.new.class
+puts no_inherited_creator.create.class
+puts creator_caller.construct(no_inherited_creator).class

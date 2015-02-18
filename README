@@ -1,4 +1,0 @@
-JRuby seems to forget wrapping Java objects to Ruby objects from time to time.
-Run rake or rake bug:run to compile & run the test-case.
-After some time (a few seconds usually) line "After XX iterations, constructed object has class Java::FooDeep::Row instead of Job"
-should appear signifying that we did not get Ruby-wrapped object.

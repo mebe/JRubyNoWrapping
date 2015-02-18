@@ -1,16 +1,16 @@
 package foo;
 
-import foo.deep.Row;
+import foo.deep.WithInherited;
+import foo.deep.NoInherited;
 
 public class RCTest {
 
-    Row construct(Creator creator) {
-        Row foo = creator.create();
-        foo.setAttribute("foo", "bar");
+    Object construct(Creator creator) {
+        Object foo = creator.create();
         return foo;
     }
 
     public interface Creator {
-        Row create();
+        Object create();
     }
 }
